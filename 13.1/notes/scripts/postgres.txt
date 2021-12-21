@@ -1,0 +1,29 @@
+POSTGRES
+
+Setup
+
+Install Postgres via Ubuntu package manager.
+
+$ sudo apt-get install postgresql
+
+The psql client is installed in /usr/bin folder.
+
+$ which psql
+
+Once Postgres is installed and you can connect, you’ll need to export the DATABASE_URL environment variable for your app to connect to it when running locally.
+
+$ export DATABASE_URL=postgres://$(whoami)
+
+The database connect string, fetched by the heroku config command is stored in .env file.
+
+$ cat .env
+
+DATABASE_URL=postgres://<USER_NAME>:<PASSWORD>@<CONNECT_URL>:5432/<DATA_BASE>
+
+Use the heroku config command to see the connect string, which is required to connect to the database.
+
+$ heroku config
+
+Add content to the table.
+
+$ insert into notes (content, important) values ('Relational databases rule the world', true);

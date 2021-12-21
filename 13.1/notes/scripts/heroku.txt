@@ -1,0 +1,54 @@
+Heroku
+
+https://devcenter.heroku.com/articles/heroku-postgresql
+
+Use the heroku addons command to determine whether your app already has Heroku Postgres provisioned
+
+$ heroku addons
+
+You can provision heroku-postgresql with the following CLI command
+
+$ heroku addons:create heroku-postgresql:<PLAN_NAME>
+
+For example, to provision part13-dev plan database.
+
+$ heroku addons:create heroku-postgresql:part13-dev
+
+Sharing Heroku Postgres between applications
+
+You can share Heroku Postgres database between multiple apps with the heroku addons:attach command.
+
+The attached database’s URL is assigned to a config var with the name format HEROKU_POSTGRESQL_[COLOR]_URL
+
+$ heroku addons:attach part13-blogs::DATABASE --app part13-notes
+
+Use the heroku config command to the see connect string, which is required to connect to the database.
+
+$ heroku config
+
+To establish a psql session with your remote database, use heroku pg:psql command.
+
+$ heroku pg:psql
+
+If you have more databases, specify the database to connect to (the database located at DATABASE_URL is used by default).
+
+$ heroku pg:psql gray
+
+Postgres user or password
+
+If providing a Postgres user or password for your local DB is necessary, use the appropriate environment variables like so.
+
+$ PGUSER=postgres PGPASSWORD=password heroku pg:pull HEROKU_POSTGRESQL_MAGENTA <DATABASE> --app <APPLICATION>
+
+The command parameters depend on connect url of the Heroku application.
+
+$ heroku run psql -h <CONNECT_URL> -p 5432 -U <USER_NAME> <DATA_BASE>
+
+To see all PostgreSQL databases provisioned by your application and the identifying characteristics, use the heroku pg:info command.
+
+$ heroku pg:info
+
+To monitor the status of PostgreSQL database, pass pg:info through Ubuntu watch command.
+
+$ watch heroku pg:info
+
