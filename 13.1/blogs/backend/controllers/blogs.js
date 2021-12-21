@@ -8,49 +8,6 @@ const jwt = require('jsonwebtoken')
 
 const { Blog, User } = require('../models')
 
-/*
-blogsRouter.get('/blogs', async (request, response) => {
-
-  console.log('blogsRouter')
-
-  const blogs = await Blog
-    .find({}).populate('user', { username: 1, name: 1 })
-
-  response.json(blogs)
-})
-
-blogsRouter.post('/blogs', async (request, response) => {
-
-  const blog = new Blog(request.body)
-
-  const decodedToken = jwt.verify(request.token, process.env.SECRET)
-
-  if (!request.token || !decodedToken.id) {
-    return response.status(401).json({ error: 'token missing or invalid' })
-  }
-
-  const user = await User.findById(decodedToken.id)
-
-  if (!blog.url || !blog.title) {
-    return response.status(400).send({ error: 'title or url missing ' })
-  }
-
-  if (!blog.likes) {
-    blog.likes = 0
-  }
-
-  blog.user = user
-  
-  const savedBlog = await blog.save()
-
-  user.blogs = user.blogs.concat(savedBlog._id)
-  
-  await user.save()
-
-  response.status(201).json(savedBlog)
-})
-*/
-
 const blogFinder = async (request, response, next) => {
 
   request.blog = await Blog.findByPk(request.params.id)
@@ -114,7 +71,6 @@ blogsRouter.put('/blogs/:id', async (request, response) => {
   }
 
 })
-
 
 blogsRouter.post('/blogs', async (request, response) => {
 
@@ -183,7 +139,50 @@ blogsRouter.delete('/blogs/:id', async (request, response) => {
   }
 })
 
+module.exports = blogsRouter
+
 /*
+blogsRouter.get('/blogs', async (request, response) => {
+
+  console.log('blogsRouter')
+
+  const blogs = await Blog
+    .find({}).populate('user', { username: 1, name: 1 })
+
+  response.json(blogs)
+})
+
+blogsRouter.post('/blogs', async (request, response) => {
+
+  const blog = new Blog(request.body)
+
+  const decodedToken = jwt.verify(request.token, process.env.SECRET)
+
+  if (!request.token || !decodedToken.id) {
+    return response.status(401).json({ error: 'token missing or invalid' })
+  }
+
+  const user = await User.findById(decodedToken.id)
+
+  if (!blog.url || !blog.title) {
+    return response.status(400).send({ error: 'title or url missing ' })
+  }
+
+  if (!blog.likes) {
+    blog.likes = 0
+  }
+
+  blog.user = user
+  
+  const savedBlog = await blog.save()
+
+  user.blogs = user.blogs.concat(savedBlog._id)
+  
+  await user.save()
+
+  response.status(201).json(savedBlog)
+})
+
 blogsRouter.delete('/blogs/:id', blogFinder, async (request, response) => {
 
   if (request.blog) {
@@ -194,5 +193,3 @@ blogsRouter.delete('/blogs/:id', blogFinder, async (request, response) => {
   response.status(204).end()
 })
 */
-
-module.exports = blogsRouter

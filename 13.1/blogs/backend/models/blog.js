@@ -1,5 +1,7 @@
 const { Model, DataTypes } = require('sequelize')
 
+const { sequelize } = require('../utils/database')
+
 const Blog = sequelize.define('blogs', {
 
   id: {
@@ -25,8 +27,6 @@ const Blog = sequelize.define('blogs', {
     defaultValue: 0
   }
 })
-
-Blog.sync()
 
 module.exports = Blog
 

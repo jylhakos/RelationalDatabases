@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize')
 
-const { sequelize } = require('../util/sequelize')
+const { sequelize } = require('../utils/database')
 
 class Note extends Model {}
 

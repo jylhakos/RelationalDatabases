@@ -1,14 +1,14 @@
+// $ export NODE_ENV=production
+
 const app = require('./app')
 
 const http = require('http')
 
-const config = require('./utils/config')
+const { PORT } = require('./utils/config')
+
+const { connect } = require('./utils/database')
 
 const logger = require('./utils/logger')
-
-const { PORT } = require('./util/config')
-
-const { connect } = require('./util/sequelize')
 
 const server = http.createServer(app)
 

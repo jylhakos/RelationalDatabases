@@ -6,23 +6,29 @@ const loginRouter = require('express').Router()
 
 const User = require('../models/user')
 
+const { SECRET } = require('../utils/config')
+
 loginRouter.post('/api/login', async (request, response) => {
 
   const body = request.body
 
   console.log('loginRouter', body.username, body.password)
 
-  const user = await User.findOne({ username: body.username })
+  const user = await User.findOne({ where: {
+      username: body.username
+    }
+  })
 
-  const passwordCorrect = user === null
-    ? false
-    : await bcrypt.compare(body.password, user.passwordHash)
+  //const passwordCorrect = body.password === 'secret'
+
+  const passwordCorrect = user === null ? false : await bcrypt.compare(body.password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
 
     return response.status(401).json({
       error: 'Error: username or password'
     })
+
   }
 
   const userForToken = {
@@ -30,7 +36,7 @@ loginRouter.post('/api/login', async (request, response) => {
     id: user._id,
   }
 
-  const token = jwt.sign(userForToken, process.env.SECRET)
+  const token = jwt.sign(userForToken, SECRET)
 
   response
     .status(200)

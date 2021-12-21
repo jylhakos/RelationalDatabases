@@ -6,6 +6,28 @@ const usersRouter = require('express').Router()
 
 const { User } = require('../models')
 
+usersRouter.get('/api/users', async (request, response) => {
+  
+  const users = await User
+    .find({}).populate('notes', { content: 1, date: 1 })
+    
+  response.json(users.map(user => user.toJSON()))
+})
+
+usersRouter.get('/api/users/:id', async (request, response) => {
+  
+  const user = await User.findByPk(request.params.id)
+  
+  if (user) {
+
+    response.json(user)
+
+  } else {
+
+    response.status(404).end()
+  }
+})
+
 usersRouter.post('/api/users', async (request, response) => {
 
   const body = request.body
@@ -25,13 +47,6 @@ usersRouter.post('/api/users', async (request, response) => {
   const savedUser = await user.save()
 
   response.json(savedUser)
-})
-
-usersRouter.get('/api/users', async (request, response) => {
-  const users = await User
-    .find({}).populate('notes', { content: 1, date: 1 })
-    
-  response.json(users.map(u => u.toJSON()))
 })
 
 module.exports = usersRouter

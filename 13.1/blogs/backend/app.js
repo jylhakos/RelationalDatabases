@@ -11,6 +11,8 @@ const app = express()
 
 const cors = require('cors')
 
+require('dotenv').config()
+
 //const mongoose = require('mongoose')
 
 const blogsRouter = require('./controllers/blogs')
@@ -24,6 +26,53 @@ const middleware = require('./utils/middleware')
 const logger = require('./utils/logger')
 
 logger.info('app.js')
+
+const exercise_13_3 = async () => {
+
+  try {
+
+    const sequelize = new Sequelize(process.env.DB_SCHEMA || 'postgres',
+      process.env.DB_USER || 'postgres',
+      process.env.POSTGRES_PASSWORD || 'postgres',
+      {
+          host: process.env.DB_HOST || 'localhost',
+          port: process.env.DB_PORT || 5432,
+          dialect: 'postgres',
+          dialectOptions: {
+              ssl: process.env.DB_SSL == "true"
+      }
+    })
+
+    await sequelize.authenticate()
+
+    console.log('Connection has been established successfully.')
+
+    const blogs = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
+
+    console.log(blogs)
+
+    sequelize.close()
+
+  } catch (error) {
+
+    console.error('Unable to connect to the database:', error)
+  }
+
+}
+
+app.use(cors())
+app.use(express.static('build'))
+app.use(express.json())
+app.use(middleware.tokenExtractor)
+app.use('/api', blogsRouter)
+app.use('/api', usersRouter)
+app.use('/api', loginRouter)
+app.use(middleware.requestLogger)
+app.use(middleware.errorHandler)
+
+exercise_13_3()
+
+module.exports = app
 
 //console.log('MONGODB', config.MONGODB_URI)
 
@@ -72,38 +121,3 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
             },
           })
 */
-
-const exercise_13_3 = async () => {
-
-  try {
-
-    await sequelize.authenticate()
-
-    console.log('Connection has been established successfully.')
-
-    const blogs = await sequelize.query("SELECT * FROM blogs", { type: QueryTypes.SELECT })
-
-    console.log(blogs)
-
-    sequelize.close()
-
-  } catch (error) {
-
-    console.error('Unable to connect to the database:', error)
-  }
-
-}
-
-app.use(cors())
-app.use(express.static('build'))
-app.use(express.json())
-app.use(middleware.tokenExtractor)
-app.use('/api', blogsRouter)
-app.use('/api', usersRouter)
-app.use('/api', loginRouter)
-app.use(middleware.requestLogger)
-app.use(middleware.errorHandler)
-
-exercise_13_3()
-
-module.exports = app

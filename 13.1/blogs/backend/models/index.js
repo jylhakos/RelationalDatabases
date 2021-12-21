@@ -1,8 +1,8 @@
-const logger = require('./utils/logger')
-
-const Note = require('./blog')
+const Blog = require('./blog')
 
 const User = require('./user')
+
+const logger = require('../utils/logger')
 
 logger.info('Blog.sync()')
 

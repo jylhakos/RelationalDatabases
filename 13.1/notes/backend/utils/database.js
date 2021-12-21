@@ -7,13 +7,14 @@ const { DATABASE_URL } = require('./config')
 logger.info('DATABASE_URL', DATABASE_URL)
 
 const sequelize = new Sequelize(DATABASE_URL, {
-  dialectOptions: {
-    ssl: {
-      require: true,
-      rejectUnauthorized: false
-    }
-  },
-})
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false
+      }
+    },
+  }
+)
 
 const connect = async () => {
 

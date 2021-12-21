@@ -9,9 +9,23 @@ const { User } = require('../models')
 usersRouter.get('/users', async (request, response) => {
   const users = await User
     .find({})
-    .populate('blogs', { title: 1, url: 1,  likes: 1, author: 1 })
+    .populate('blogs', { title: 1, url: 1, likes: 1, author: 1 })
 
-  response.json(users.map(u => u.toJSON()))
+  response.json(users.map(user => user.toJSON()))
+})
+
+usersRouter.get('/users/:id', async (request, response) => {
+  
+  const user = await User.findByPk(request.params.id)
+  
+  if (user) {
+
+    response.json(user)
+
+  } else {
+
+    response.status(404).end()
+  }
 })
 
 usersRouter.post('/users', async (request, response) => {
