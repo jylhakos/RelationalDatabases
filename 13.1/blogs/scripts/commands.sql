@@ -1,3 +1,5 @@
+ALTER USER postgres WITH password 'postgres';
+
 CREATE TABLE blogs (
     id SERIAL PRIMARY KEY,
     author text,
@@ -13,3 +15,13 @@ INSERT INTO blogs (author, url, title, likes) values ('Robert C. Martin', 'http:
 SELECT * from blogs;
 
 DROP TABLE blogs;
+
+$ sudo -u postgres psql postgres
+
+postgres=# ALTER USER postgres WITH password 'postgres';
+
+postgres=# SELECT * FROM blogs;
+
+postgres=# SELECT * FROM users;
+
+postgres=# DELETE FROM blogs WHERE blogs.id = 1;

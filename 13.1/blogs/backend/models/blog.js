@@ -25,7 +25,11 @@ const Blog = sequelize.define('blogs', {
   likes: {
     type: DataTypes.INTEGER,
     defaultValue: 0
-  }
+  },
+  /*user:  {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }*/
 })
 
 module.exports = Blog

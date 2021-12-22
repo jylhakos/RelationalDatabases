@@ -27,3 +27,11 @@ $ heroku config
 Add content to the table.
 
 $ insert into notes (content, important) values ('Relational databases rule the world', true);
+
+$ sudo -u postgres psql postgres
+
+postgres=# ALTER USER postgres WITH password 'postgres';
+
+postgres=# SELECT * FROM blogs;
+
+postgres=# SELECT * FROM users;

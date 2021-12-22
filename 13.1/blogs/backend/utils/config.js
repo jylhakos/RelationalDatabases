@@ -1,18 +1,20 @@
 require('dotenv').config()
 
-let PORT = process.env.PORT | 3001
+const PORT = parseInt(process.env.PORT,10) || 3001
 
-let DB_HOST = process.env.DB_HOST | 'localhost'
+const DB_HOST = String(process.env.DB_HOST) || 'localhost'
 
-let DB_PORT = process.env.DB_PORT | 5432
+const DB_PORT = parseInt(process.env.DB_PORT,10) || 5432
 
-let POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD | 'postgres'
+const POSTGRES_PASSWORD = process.env.POSTGRES_PASSWORD || 'postgres'
 
-let DB_USER = process.env.DB_USER | 'postgres'
+const DB_USER = process.env.DB_USER || 'postgres'
 
-let SECRET = process.env.SECRET
+const DB_SCHEMA = process.env.const || 'postgres'
 
-console.log('DB_HOST', DB_HOST, 'DB_PORT', DB_PORT)
+const SECRET = process.env.SECRET || 'secret'
+
+console.log('PORT', PORT, 'DB_HOST', DB_HOST, 'DB_PORT', DB_PORT)
 
 module.exports = {
   PORT,

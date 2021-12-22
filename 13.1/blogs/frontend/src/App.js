@@ -21,6 +21,9 @@ const App = () => {
     blogService.getAll().then(blogs =>
       setBlogs(blogs)
     )
+
+    blogs.map(b => console.log(b.username))
+
   }, [])
 
   useEffect(() => {
@@ -43,7 +46,7 @@ const App = () => {
 
     try {
 
-      console.log('handleLogin')
+      console.log('handleLogin', username)
 
       const user = await loginService.login({
         username, password
@@ -59,9 +62,11 @@ const App = () => {
 
       storage.saveUser(user)
 
+      console.log('handleLogin', user.name)
+
     } catch(exception) {
 
-      notifyWith('Error: username/password', 'error')
+      notifyWith('Error: username or password', 'error')
     }
   }
 
@@ -75,7 +80,7 @@ const App = () => {
 
       setBlogs(blogs.concat(newBlog))
 
-      notifyWith(`a new blog '${newBlog.title}' by ${newBlog.author} added!`)
+      notifyWith(`New blog '${newBlog.title}' by ${newBlog.author} added!`)
     
     } catch(exception) {
 
@@ -84,10 +89,16 @@ const App = () => {
   }
 
   const handleLike = async (id) => {
+
     const blogToLike = blogs.find(b => b.id === id)
+
     const likedBlog = { ...blogToLike, likes: blogToLike.likes + 1, user: blogToLike.user.id }
+    
     await blogService.update(likedBlog)
+    
     setBlogs(blogs.map(b => b.id === id ?  { ...blogToLike, likes: blogToLike.likes + 1 } : b))
+  
+    console.log('handleLike', user.username)
   }
 
   const handleRemove = async (id) => {
@@ -146,7 +157,7 @@ const App = () => {
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
 
-      <Togglable buttonLabel='create new blog'  ref={blogFormRef}>
+      <Togglable buttonLabel='Create new blog'  ref={blogFormRef}>
         <NewBlog createBlog={createBlog} />
       </Togglable>
 
@@ -156,7 +167,6 @@ const App = () => {
           blog={blog}
           handleLike={handleLike}
           handleRemove={handleRemove}
-          own={user.username===blog.user.username}
         />
       )}
     </div>
@@ -164,3 +174,5 @@ const App = () => {
 }
 
 export default App
+
+//own={user.username===blog.user.username}

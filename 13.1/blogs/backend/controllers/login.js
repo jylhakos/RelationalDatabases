@@ -14,14 +14,16 @@ loginRouter.post('/login', async (request, response) => {
 
   console.log('loginRouter', body.username, body.password)
 
+  try {
+
   const user = await User.findOne({ where: {
       username: body.username
     }
   })
 
-  //const passwordCorrect = body.password === 'secret'
+  const passwordCorrect = body.password === 'fullstack'
 
-  const passwordCorrect = user === null ? false : await bcrypt.compare(body.password, user.passwordHash)
+  //const passwordCorrect = user === null ? false : await bcrypt.compare(body.password, user.passwordHash)
 
   if (!(user && passwordCorrect)) {
 
@@ -41,6 +43,13 @@ loginRouter.post('/login', async (request, response) => {
   response
     .status(200)
     .send({ token, username: user.username, name: user.name })
+
+  } catch (error) {
+
+    console.error('Unable to connect the database.', error)
+
+    return response.status(401).json({Error: 'Error login'})
+  }
 })
 
 module.exports = loginRouter

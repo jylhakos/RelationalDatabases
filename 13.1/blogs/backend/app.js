@@ -27,7 +27,9 @@ const logger = require('./utils/logger')
 
 logger.info('app.js')
 
-const exercise_13_3 = async () => {
+const exercise = async (title) => {
+
+  console.log('exercise', title)
 
   try {
 
@@ -57,7 +59,6 @@ const exercise_13_3 = async () => {
 
     console.error('Unable to connect to the database:', error)
   }
-
 }
 
 app.use(cors())
@@ -70,7 +71,7 @@ app.use('/api', loginRouter)
 app.use(middleware.requestLogger)
 app.use(middleware.errorHandler)
 
-exercise_13_3()
+// exercise('13.3')
 
 module.exports = app
 
