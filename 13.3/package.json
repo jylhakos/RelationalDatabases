@@ -1,0 +1,32 @@
+{
+  "name": "cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "cli.js",
+  "scripts": {
+    "start": "NODE_ENV=production node cli.js",
+    "dev": "NODE_ENV=development nodemon cli.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^3.0.7",
+    "cors": "^2.8.5",
+    "curl": "^0.1.4",
+    "dotenv": "^8.6.0",
+    "express": "^4.17.1",
+    "express-async-errors": "^3.1.1",
+    "jest": "^25.1.0",
+    "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.15",
+    "mongoose": "^5.8.10",
+    "nodemon": "^2.0.2",
+    "pg": "^8.7.1",
+    "sequelize": "^6.12.0",
+    "sequelize-cli": "^6.3.0"
+  },
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "supertest": "^4.0.2"
+  }
+}
