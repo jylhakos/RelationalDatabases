@@ -8,25 +8,23 @@ const { User, Blog } = require('../models')
 
 const { check, validationResult } = require('express-validator')
 
-usersRouter.get('/users', async (request, response) => {
+usersRouter.get('/', async (request, response) => {
 
   console.log('usersRouter.get /users')
 
   const users = await User.findAll({
+    attributes: { exclude: ['userId'] },
     include: {
       model: Blog,
       attributes: ['id', 'title', 'url', 'likes', 'author' ]
-      //attributes: { exclude: ['userId'] },
       //order: [['id','DESC']]})
     }
   })
 
-  //populate('blogs', { title: 1, url: 1, likes: 1, author: 1 })
-
   response.json(users.map(user => user.toJSON()))
 })
 
-usersRouter.get('/users/:id', async (request, response) => {
+usersRouter.get('/:id', async (request, response) => {
 
   console.log('usersRouter.get /users/:id', request.params.id)
 
@@ -49,7 +47,7 @@ usersRouter.get('/users/:id', async (request, response) => {
   }
 })
 
-usersRouter.post('/users', [check('username').isEmail()], async (request, response) => {
+usersRouter.post('/', [check('username').isEmail()], async (request, response) => {
 
   const { username, name, password } = request.body
 
@@ -98,7 +96,7 @@ usersRouter.post('/users', [check('username').isEmail()], async (request, respon
 
 })
 
-usersRouter.put('/users/:username', async (request, response) => {
+usersRouter.put('/:username', async (request, response) => {
 
   console.log('request.params.username', request.params.username)
 

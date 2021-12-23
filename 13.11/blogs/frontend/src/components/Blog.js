@@ -8,7 +8,9 @@ import { likeBlog, removeBlog, commentBlog } from '../reducers/blogs'
 
 const Comments = ({ comments, handleComment }) => {
 
-  if ( comments.length === 0) {
+  console.log('comments', comments)
+
+  if (!comments || comments === 'undefined' || comments.length === 0) {
     return null
   }
 
@@ -39,9 +41,17 @@ const Comments = ({ comments, handleComment }) => {
 
 const Blog = () => {
 
-  const id = useParams().id
+  const id = parseInt(useParams().id)
 
-  const blog = useSelector(state => state.blogs.find(b => b.id === id))
+  console.log('Blog', id)
+
+  //const blog = useSelector(state => state.blogs.find(b => b.id === id))
+
+  const blogs = useSelector(state => state.blogs)
+
+  console.log('blogs', blogs)
+
+  const blog = blogs.find(b => b.id === id)
 
   const user = useSelector(state => state.user)
 
@@ -49,11 +59,18 @@ const Blog = () => {
 
   const history = useHistory()
 
+  console.log('Blog', blog, 'user', user)
+
   if (!blog) {
+
     return null
   }
 
+  console.log('user', user, 'blog.user.username', blog.user.username)
+
   const own = user && user.username === blog.user.username
+
+  console.log('own', own)
 
   const handleLike = () => {
 

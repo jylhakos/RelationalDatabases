@@ -1,3 +1,5 @@
+// package.json "proxy": "http://localhost:3000/api"
+
 import React, { useEffect } from 'react'
 
 import { useSelector, useDispatch } from 'react-redux'

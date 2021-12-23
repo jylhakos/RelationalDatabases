@@ -8,6 +8,8 @@ const Blogs = () => {
 
   const blogs = useSelector(state => state.blogs).sort((b1, b2) => b2.likes - b1.likes)
 
+  console.log('Blogs', blogs)
+
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,

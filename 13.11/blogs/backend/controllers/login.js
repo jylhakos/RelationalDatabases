@@ -8,7 +8,7 @@ const User = require('../models/user')
 
 const { SECRET } = require('../utils/config')
 
-loginRouter.post('/login', async (request, response) => {
+loginRouter.post('/', async (request, response) => {
 
   const body = request.body
 

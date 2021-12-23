@@ -2,6 +2,8 @@ import blogService from '../services/blogs'
 
 const reducer = (state = [], action) => {
 
+  console.log('reducer', action.type)
+  
   switch (action.type) {
 
   case 'INIT':
@@ -60,6 +62,8 @@ export const initializeBlogs = () => {
   return async dispatch => {
 
     const data = await blogService.getAll()
+
+    console.log('initializeBlogs', JSON.stringify(data))
 
     dispatch({
       type: 'INIT',
