@@ -47,10 +47,13 @@ const blogFinder = async (request, response, next) => {
 
 blogsRouter.get('/blogs', async (request, response) => {
   
-  console.log('blogsRouter')
+  console.log('blogsRouter.get /blogs')
 
   const blogs = await Blog.findAll({
-    attributes: { exclude: ['id'] }
+    include: {
+      model: User,
+      attributes: { exclude: ['userId'] }
+    }
   })
 
   //console.log(blogs.map(blog => blog.toJSON()))
@@ -58,7 +61,6 @@ blogsRouter.get('/blogs', async (request, response) => {
   console.log(JSON.stringify(blogs))
   
   response.json(blogs)
-
 })
 
 blogsRouter.get('/blogs/:id', async (request, response) => {
@@ -147,49 +149,61 @@ blogsRouter.post('/blogs', tokenExtractor, async (request, response) => {
   }
 })
 
-blogsRouter.delete('/blogs/:id', async (request, response) => {
+blogsRouter.delete('/blogs/:id', tokenExtractor, async (request, response) => {
 
-  var decodedToken = null
+  console.log('delete', request.params.id)
 
-  var user = null
+  if(request.token && SECRET) {
 
-  var blog = null
+    console.log('delete', request.token, request.decodedToken)
 
-  if(request.token && process.env.SECRET) {
-
-    decodedToken = jwt.verify(request.token, process.env.SECRET)
+    var decodedToken = jwt.verify(request.token, SECRET)
 
     if (!request.token || !decodedToken.id) {
+
+      console.error('token missing or invalid')
     
       return response.status(401).json({ error: 'token missing or invalid' })
     }
 
-    user = await User.findById(decodedToken.id)
-  
-    blog = await Blog.findById(request.params.id)
-  
-    if (blog.user.toString() !== user.id.toString()) {
+    //user = await User.findById(decodedToken.id)
 
-    return response.status(401).json({ error: 'only the creator can delete blogs' })
-  
+    const user = await User.findOne({ where: { username: request.decodedToken.username }})
+    
+    if (user) {
+
+      const blog = await Blog.findById(request.params.id)
+
+      if (blog.user.toString() !== user.id.toString()) {
+
+        console.error('only the creator can delete blogs')
+
+        return response.status(401).json({ error: 'only the creator can delete blogs' })
+      }
+
+      await blog.remove()
+    
+      user.blogs = user.blogs.filter(b => b.id.toString() !== request.params.id.toString())
+    
+      await user.save()
+    
+      response.status(204).end()
+    } else {
+
+      return response.status(401).json({ error: 'user not found' })
     }
-
-    await blog.remove()
-  
-    user.blogs = user.blogs.filter(b => b.id.toString() !== request.params.id.toString())
-  
-    await user.save()
-  
-    response.status(204).end()
   }
   else {
 
-    blog = await Blog.findById(request.params.id)
+    //blog = await Blog.findById(request.params.id)
 
-    await blog.remove()
+    //await blog.remove()
 
-    response.status(204).end()
+    //response.status(204).end()
+
+    return response.status(401).json({ error: 'token not found' })
   }
+
 })
 
 module.exports = blogsRouter

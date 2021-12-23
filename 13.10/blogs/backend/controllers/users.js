@@ -2,21 +2,32 @@ const bcrypt = require('bcrypt')
 
 const usersRouter = require('express').Router()
 
-const { User } = require('../models')
+const { User, Blog } = require('../models')
 
 //const User = require('../models/user')
 
 const { check, validationResult } = require('express-validator')
 
 usersRouter.get('/users', async (request, response) => {
-  const users = await User
-    .find({})
-    .populate('blogs', { title: 1, url: 1, likes: 1, author: 1 })
+
+  console.log('usersRouter.get /users')
+
+  const users = await User.findAll({
+    include: {
+      model: Blog,
+      attributes: ['id', 'title', 'url', 'likes', 'author' ]
+      //attributes: { exclude: ['userId'] },
+    }
+  })
+
+  //.populate('blogs', { title: 1, url: 1, likes: 1, author: 1 })
 
   response.json(users.map(user => user.toJSON()))
 })
 
 usersRouter.get('/users/:id', async (request, response) => {
+
+  console.log('usersRouter.get /users/:id', request.params.id)
 
   try {
 
@@ -41,7 +52,7 @@ usersRouter.post('/users', [check('username').isEmail()], async (request, respon
 
   const { username, name, password } = request.body
 
-  console.log('users', username, name, password)
+  console.log('usersRouter.post /users', username, name, password)
 
   const errors = validationResult(request)
 

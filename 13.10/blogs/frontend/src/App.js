@@ -25,6 +25,7 @@ const App = () => {
 
   useEffect(() => {
     const user = storage.loadUser()
+    console.log('useEffect user', user)
     setUser(user)
   }, [])
 
@@ -43,11 +44,12 @@ const App = () => {
 
     try {
 
-      console.log('handleLogin')
-
+      
       const user = await loginService.login({
         username, password
       })
+
+      console.log('handleLogin', user)
 
       setUsername('')
 

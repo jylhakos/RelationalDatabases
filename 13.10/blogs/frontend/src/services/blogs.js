@@ -11,26 +11,37 @@ const getConfig = () => {
 
 const getAll = () => {
 
-  console.log('getAll')
-  
   const request = axios.get(baseUrl)
-  
+
+  console.log('getAll', request)
+
   return request.then(response => response.data)
 }
 
 const create = (blog) => {
+
   const request = axios.post(baseUrl, blog, getConfig())
-  console.log('create',request)
+
+  console.log('create', request)
+
   return request.then(response => response.data)
 }
 
 const update = (blog) => {
+
   const request = axios.put(`${baseUrl}/${blog.id}`, blog, getConfig())
+  
+  console.log('update', request)
+
   return request.then(response => response.data)
 }
 
 const remove = (id) => {
+
   const request = axios.delete(`${baseUrl}/${id}`, getConfig())
+  
+  console.log('remove', request)
+
   return request.then(response => response.data)
 }
 
