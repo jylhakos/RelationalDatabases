@@ -6,6 +6,8 @@ import { useParams, useHistory } from 'react-router-dom'
 
 import { likeBlog, removeBlog, commentBlog } from '../reducers/blogs'
 
+import { initializeUsers } from '../reducers/users'
+
 const Comments = ({ comments, handleComment }) => {
 
   console.log('comments', comments)
@@ -80,8 +82,10 @@ const Blog = () => {
   const handleRemove = () => {
 
     const ok = window.confirm(`Delete blog ${blog.title} by ${blog.author}`)
+    
     if (ok) {
       dispatch(removeBlog(id))
+      dispatch(initializeUsers())
       history.push('/')
     }
   }

@@ -94,25 +94,45 @@ blogsRouter.get('/:id', async (request, response) => {
 
 blogsRouter.put('/:id', async (request, response) => {
 
-  console.log('request.params.id', request.params.id)
+  console.log('request.body', request.body, 'request.params.id', request.params.id)
 
   try {
 
-    var blog = await Blog.findByPk(request.params.id)
+    console.log('request.body.user', request.body.user)
 
-    if (blog) {
+    const user = request.body.user
 
-      console.log('request.body.likes', request.body.likes)
+    console.log('user', user)
 
-      blog.likes = request.body.likes
+    if (user) {
 
-      await blog.save()
+      var blog = await Blog.findByPk(request.params.id)
 
-      response.json(blog)
+      if (blog) {
+
+        console.log('request.body.likes', request.body.likes)
+
+        blog.likes = request.body.likes
+
+        await blog.save()
+
+        var blogLikes = blog.dataValues
+
+        blogLikes.user = user
+
+        console.log('blogLikes', blogLikes)
+
+        response.json(blogLikes)
+
+      } else {
+
+        response.status(404).end()
+      }
 
     } else {
 
       response.status(404).end()
+
     }
 
   } catch(error) {
@@ -135,15 +155,21 @@ blogsRouter.post('/', tokenExtractor, async (request, response) => {
 
       blog = await Blog.create({ ...request.body, userId: user.id })
 
-      console.log('blog', blog)
+      //console.log('blog', blog, 'user', user)
 
       //const blog = Blog.build(request.body)
 
       //blog.author = 'unknown'
 
       //await blog.save()
-      
-      response.json(blog)
+
+      var blogUser = blog.dataValues
+
+      blogUser.user = user.dataValues
+
+      console.log('blogUser', blogUser)
+
+      response.json(blogUser)
 
     }
 

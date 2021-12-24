@@ -20,7 +20,7 @@ const reducer = (state = [], action) => {
   }
 
   case 'DELETE': {
-    return state.filter(b => b.id!==action.id)
+    return state.filter(b => b.id !== action.id)
   }
 
   case 'CREATE':
