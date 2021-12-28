@@ -20,6 +20,10 @@ logger.info('Blog.sync()')
 
 Blog.sync()
 
+logger.info('Reading.sync()')
+
+Reading.sync()
+
 module.exports = {
   Blog, 
   User, 

@@ -28,8 +28,6 @@ Blog.init({
     type: DataTypes.INTEGER,
     defaultValue: 0
   },
-  createdAt: 'created_at',
-  updatedAt: 'updated_at',
   user_id: {
     field: 'user_id',
     type: DataTypes.INTEGER,
