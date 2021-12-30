@@ -6,9 +6,15 @@ const Session = require('../models/session')
 
 logoutRouter.delete('/', async (request, response) => {
 
-  const username = request.body.username
+  //console.log('logoutRouter', request)
 
-  console.log('logoutRouter', username)
+  const token = request.body.token
+
+  const username = request.body.username
+  
+  const name = request.body.name
+
+  console.log('logoutRouter', token, username, name)
 
   try {
 

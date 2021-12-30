@@ -53,6 +53,8 @@ const App = () => {
 
   useEffect(() => {
 
+    console.log('useEffect')
+
     dispatch(initializeBlogs())
 
     dispatch(initializeUsers())
@@ -62,7 +64,6 @@ const App = () => {
     const user = storage.loadUser()
 
     if (user) {
-
       dispatch(login(user))
     }
   }, [dispatch])
@@ -73,14 +74,27 @@ const App = () => {
 
     dispatch(createBlog(blog))
 
+    dispatch(initializeUsers())
+
+    dispatch(getAuthors())
+
     dispatch(setNotification(`New blog '${blog.title}' by ${blog.author} added.`))
   }
 
-  const handleLogout = () => {
+  const handleLogout = (user) => {
 
-    dispatch(logout())
+    console.log('handleLogout', user)
 
-    storage.logoutUser()
+    if (user) {
+
+      dispatch(setNotification(`${user.name} logout`))
+
+      setTimeout(function() { 
+        dispatch(logout(user))
+        storage.logoutUser()
+        window.location.reload()
+      }, 2000)
+    }
   }
 
   const handleChange = (event) => {
@@ -132,7 +146,7 @@ const App = () => {
         <Link style={padding} to="/authors">authors</Link>
         <Link style={padding} to="/users">users</Link>
         <span style={padding}>
-          {user.name} logged in <button onClick={handleLogout}>logout</button>
+          {user.name} logged in <button value={user} onClick={() => { handleLogout(user); } }>logout</button>
         </span>
 
         <span style={paddingLeft}>

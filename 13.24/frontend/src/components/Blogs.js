@@ -2,9 +2,15 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
+
+import { initializeUsers } from '../reducers/users'
 
 const Blogs = () => {
+
+  const dispatch = useDispatch()
+
+  dispatch(initializeUsers())
 
   const blogs = useSelector(state => state.blogs).sort((b1, b2) => b2.likes - b1.likes)
 

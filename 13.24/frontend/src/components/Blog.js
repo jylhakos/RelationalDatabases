@@ -8,6 +8,8 @@ import { likeBlog, removeBlog, commentBlog } from '../reducers/blogs'
 
 import { initializeUsers } from '../reducers/users'
 
+import { getAuthors } from '../reducers/authors'
+
 const Comments = ({ comments, handleComment }) => {
 
   console.log('comments', comments)
@@ -87,6 +89,7 @@ const Blog = () => {
     if (ok) {
       dispatch(removeBlog(id))
       dispatch(initializeUsers())
+      dispatch(getAuthors())
       history.push('/')
     }
   }
