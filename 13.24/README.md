@@ -15,4 +15,4 @@ Sequelize
 
 https://sequelize.org/main/
 
-![alt text](https://github.com/jylhakos/DevOpsWithKubernetes/blob/main/5/5.06/table.png?raw=true)
+![alt text](https://github.com/jylhakos/RelationalDatabases/blob/main/13.24/frontend/public/13.24.png?raw=true)
