@@ -21,5 +21,3 @@ A relational schema is a set of relational table definitions, constraints, and d
 Non-Relational databases provide ways of storing, searching and retrieving data other than in tables with relationships.
 
 MongoDB is a document database that stores records as loosely structured documents.
-
-![alt text](https://github.com/jylhakos/RelationalDatabases/relational.png?raw=true)
